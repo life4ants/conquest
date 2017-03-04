@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import ColorBox from './colorbox'
-
-var colors = ["#004500", "black", "#FF00FF", "#FF0000", "#FFFF00", "#00FF00", "#00FFFF", "#0000FF", "#764710", "#FF8000"]
+import Colors from './colors'
 
 class ColorPicker extends Component {
 
@@ -15,7 +14,7 @@ class ColorPicker extends Component {
 
   renderColor(i){
     return (
-      <ColorBox onClick={()=>{this.props.onClick(this.props.id, colors[i])}} color={colors[i]} key={i} />
+      <ColorBox onClick={()=>{this.props.onClick(this.props.id, Colors[i], i)}} color={Colors[i]} key={i} />
       )
   }
 
