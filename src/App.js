@@ -4,7 +4,6 @@ import Welcome from './components/welcome'
 import Setup from './components/setup'
 import Board from './components/board'
 import Colors from './components/colors'
-// import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import './colors.css';

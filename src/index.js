@@ -6,10 +6,15 @@ import './index.css';
 
 var selectedCountry = [];
 
-var react_compontent = ReactDOM.render(
+// var react_compontent =
+ReactDOM.render(
   <App />,
   document.getElementById('root')
 );
+
+window.modal = function() {
+  $("#myModal").modal();
+}
 
 window.clicker = function(i){
   // react_compontent.setTerritory(i);
