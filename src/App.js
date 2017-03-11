@@ -4,6 +4,8 @@ import Welcome from './components/welcome'
 import Setup from './components/setup'
 import Board from './components/board'
 import Colors from './components/colors'
+import Game from './components/game'
+import Footer from './components/footer'
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import './colors.css';
@@ -24,6 +26,10 @@ class App extends Component {
     }
   }
 
+  blow(){
+    document.getElementById('wrapper').innerHTML = '';
+  }
+
   changePlayer(){
     this.setState({phase: 'setup', header: 'welcome'})
     window.scrollTo(0, 0)
@@ -41,6 +47,21 @@ class App extends Component {
       return this.state.player2
   }
 
+  fillTerritories(){
+    let obj1 = Array(91)
+    let obj2 = Array(91)
+    for (let i=1; i<91; i++){
+      obj1[i] = i
+      if (Game.pacific.includes(i))
+        obj2[i] = 10
+      else if (Game.alantic.includes(i))
+        obj2[i] = 11
+      else if (Game.gulf.includes(i))
+        obj2[i] = 12
+    }
+    this.setState({reserves: obj1, owners: obj2})
+  }
+
   initializeTerritories(){
     var player1 = Math.floor(Math.random() * 45) + 1;
     var player2 = Math.floor(Math.random() * 45) + 46;
@@ -50,7 +71,7 @@ class App extends Component {
     this.setState({owners: obj})
     var obj2 = Array(91)
     obj2[player1] = [10,5]
-    obj2[player2] = 10
+    obj2[player2] = [8, 3]
     this.setState({reserves: obj2})
   }
 
@@ -60,7 +81,8 @@ class App extends Component {
         this.state.player1.color !== '' &&
         this.state.player2.color !== ''
       ){
-      this.initializeTerritories()
+      this.fillTerritories()
+      Game.clearBoard()
       this.setState({phase: 'playing', setupError: '', header: 'playing'})
     }
     else{
@@ -70,7 +92,7 @@ class App extends Component {
 
   pickComponent(){
     if (this.state.phase === 'welcome')
-      return <Welcome onClick={this.start.bind(this)}/>
+      return <Welcome onClick={this.start.bind(this)} ontock={() => this.blow()}/>
     else if (this.state.phase === 'setup'){
       return (<Setup onClick={this.setColor.bind(this)} names={[this.state.player1.name, this.state.player2.name]}
                   onChange={this.setName.bind(this)} error={this.state.setupError}
@@ -139,17 +161,10 @@ class App extends Component {
       <div className="App">
         {this.renderHeader()}
         {this.pickComponent()}
+        <Footer />
       </div>
     );
   }
 }
-
-// function setTerritoryColors(arr){
-//   for (var i=1; i<arr.length; i++){
-//     if (arr[i]){
-//       $('.territory'+i).addClass("color" + arr[i]);
-//     }
-//   }
-// }
 
 export default App;

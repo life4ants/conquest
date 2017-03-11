@@ -17,11 +17,7 @@
   justify-content: center;
   padding: 10px;
 }
-.colors-container .first_half{
-  display: flex;
-}
-
-.colors-container .second_half{
+.colors-container div{
   display: flex;
 }
 
@@ -35,13 +31,18 @@
 .grey { fill: #999; }
 .map { fill: #fdb; stroke: #f00; stroke-width: 0;}
 
+
 .color0 { fill: #004500; }
-.color1 { fill: black; }
+.color1 { fill: #222; }
 .color2 { fill: #FF00FF; }
-.color3 { fill: #FF0000; stroke: #00FFFF;}
+.color3 { fill: #FF0000; stroke: #FF0;}
 .color4 { fill: #FFFF00; }
 .color5 { fill: #00FF00; }
 .color6 { fill: #00FFFF; }
 .color7 { fill: #0000FF; }
 .color8 { fill: #764710; }
 .color9 { fill: #FF8000; }
+
+.color10 {fill: #fd9;}
+.color11 {fill: #fee;}
+.color12 {fill: #ec7;}

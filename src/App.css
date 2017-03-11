@@ -1,9 +1,10 @@
 
-.header {
+header {
   background-color: #058005;
   position: fixed;
   top: 0px;
-  width: 100%;
+  left: 0px;
+  width: 100vw;
   height: 40px;
   padding: 5px;
   font-size: 16px;
@@ -19,6 +20,10 @@
   margin: 0px 10px;
 }
 
+.header-content .small {
+  font-size: 12px;
+}
+
 .player-color{
   display: inline;
   padding: 0px 4px;
@@ -26,16 +31,18 @@
 
 .setup {
   list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 
 ul .inputs{
   display: flex;
-  justify-content: center;
+  justify-content: space-around;
 }
 
 ul .inputs div, ul .inputs label, ul .inputs input {
-  margin: 0px 15px;
+  /*margin: 0px 15px;*/
 }
 
 ul button{
@@ -43,17 +50,30 @@ ul button{
 }
 
 .board{
+  width: 1200px;
+  margin: auto;
 }
 
-.wrapper{
-  background-color: #222;
+#wrapper{
+  background-color: #111;
   width: 1200px;
   margin: auto;
   padding-top: 40px;
 }
 
-#gameMap{
-
+footer{
+ position: fixed;
+ bottom: 0px;
+ left: 0px;
+ border-style: solid;
+ border-color: #363;
+ border-width: 2px 2px 0px 0px;
+ padding: 3px 5px;
+ border-radius: 0pt 10px 0pt 0px;
+ background: rgba(110, 256, 110, 0.9);
+ color: #344;
+ font-size: 16px;
 }
+
 
 

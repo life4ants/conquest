@@ -13,7 +13,7 @@ class Board extends Component {
   }
 
   renderBox(i){
-    return <Box id={i} value={this.props.reserves[i]} key={i} owner={this.props.owners[i]} />
+    return <Box id={i} value={this.props.reserves[i]} key={'box'+i} owner={this.props.owners[i]} />
   }
 
   render() {

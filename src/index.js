@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import Game from './components/game'
 import $ from 'jquery'
 import './index.css';
 
@@ -17,11 +18,24 @@ window.modal = function() {
 }
 
 window.clicker = function(i){
-  // react_compontent.setTerritory(i);
-  if (selectedCountry[0])
+  if (selectedCountry[1]){
+    deselect(selectedCountry[1])
     deselect(selectedCountry[0])
-  selectedCountry[0] = i;
-  select(i)
+    select(i)
+    selectedCountry = [i]
+  }
+  else if (selectedCountry[0]){
+    if(Game.canFight(selectedCountry[0], i)){
+      select(i)
+      selectedCountry[1] = i
+    }
+    else
+      alert('Those Territories do not border!')
+  }
+  else{
+    selectedCountry[0] = i;
+    select(i);
+  }
 
 }
 

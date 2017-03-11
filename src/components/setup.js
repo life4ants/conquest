@@ -12,7 +12,7 @@ class Setup extends Component {
             <label>   Color (pick one): </label>
             <div className="color-preview" style={{backgroundColor: this.props.color[i-1]}}></div>
           </div>
-          <ColorPicker onClick={this.props.onClick} key={i} id={'player'+i}/>
+          <ColorPicker onClick={this.props.onClick} key={'picker'+i} id={'player'+i}/>
         </li>
       )
   }
@@ -26,7 +26,7 @@ class Setup extends Component {
 
   render() {
     return (
-      <div className='container'>
+      <div className='overlay'>
         <ul className="setup">
           {this.renderLI(1)}
           {this.renderLI(2)}

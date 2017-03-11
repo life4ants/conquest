@@ -6,15 +6,20 @@ class ColorPicker extends Component {
 
   renderColors(s, e){
     var output = []
-    for (var i=s; i<e; i++){
-      output.push(this.renderColor(i));
+    for (var i=s; i<e; i+=2){
+      output.push(this.renderPair(i, i+1));
     }
     return output
   }
 
-  renderColor(i){
+  renderPair(a, b){
     return (
-      <ColorBox onClick={()=>{this.props.onClick(this.props.id, Colors[i], i)}} color={Colors[i]} key={i} />
+      <div>
+        <ColorBox onClick={()=>{this.props.onClick(this.props.id, Colors[a], a)}}
+                  color={Colors[a]} key={this.props.id+'color'+a} />
+        <ColorBox onClick={()=>{this.props.onClick(this.props.id, Colors[b], b)}}
+                  color={Colors[b]} key={this.props.id+'color'+b} />
+      </div>
       )
   }
 
@@ -22,12 +27,7 @@ class ColorPicker extends Component {
     return (
       <div>
         <div className="colors-container">
-          <div className="first_half">
-            {this.renderColors(0,5)}
-          </div>
-          <div className="second_half">
-            {this.renderColors(5,10)}
-          </div>
+          {this.renderColors(0,10)}
         </div>
       </div>
     );
