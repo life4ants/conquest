@@ -6,6 +6,7 @@ import Board from './components/board'
 import Colors from './components/colors'
 import Game from './components/game'
 import Footer from './components/footer'
+import $ from 'jquery'
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import './colors.css';
@@ -21,13 +22,16 @@ class App extends Component {
       turnIndex: 0,
       setupError: '',
       header: 'welcome',
+      footer: '[Marching Troops]',
       reserves: '',
       owners: ''
     }
   }
 
   blow(){
-    document.getElementById('wrapper').innerHTML = '';
+    let message = this.state.footer === '[Marching Troops]' ? '[Adding Reserves]' : '[Marching Troops]';
+    this.setState({footer: message});
+    $('footer').hide().slideDown();
   }
 
   changePlayer(){
@@ -161,7 +165,7 @@ class App extends Component {
       <div className="App">
         {this.renderHeader()}
         {this.pickComponent()}
-        <Footer />
+        <Footer value={this.state.footer} />
       </div>
     );
   }

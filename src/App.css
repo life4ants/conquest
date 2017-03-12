@@ -24,6 +24,14 @@ header {
   font-size: 12px;
 }
 
+.header-content .M-label{
+  font-size: 22px;
+  font-weight: bolder;
+  margin: 0px 5px;
+  vertical-align: middle;
+  color: #cFc;
+}
+
 .player-color{
   display: inline;
   padding: 0px 4px;

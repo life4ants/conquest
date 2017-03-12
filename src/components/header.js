@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import MyModal from './myModal';
+import icon from '../images/march.svg';
+import army_A from '../images/Army_A.svg';
+import army_P from '../images/Army_P.svg';
+import army_C from '../images/Army_C.svg';
 
 class Header extends Component {
   constructor(){
@@ -22,8 +26,22 @@ class Header extends Component {
           </div>
           {/*<button onClick={this.props.changePlayer} className='btn btn-secondary btn-sm'>Change Players Info</button>*/}
           <button onClick={this.props.endTurn} className='btn btn-secondary btn-sm'>End Turn</button>
-          <div><strong>Reserves Remaining: </strong>75 75 75</div>
-          <div><strong>Marches Remaining: </strong>5</div>
+          <div>
+            <span className="M-label">75</span>
+            <img src={army_A} />
+          </div>
+          <div>
+            <span className="M-label">75</span>
+            <img src={army_P} />
+          </div>
+          <div>
+            <span className="M-label">75</span>
+            <img src={army_C} />
+          </div>
+          <div>
+            <span className='M-label'>5</span>
+            <img src={icon} />
+          </div>
           <div className={"player-color"} style={{border: 'solid 5px '+this.props.player.color}}>
             <strong>Player: </strong>{this.props.player.name}
           </div>

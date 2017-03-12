@@ -3,7 +3,6 @@ import $ from 'jquery'
 const Game = {
 
   clearBoard(){
-    console.log(this.territoryInfo[1]);
     for (let i=0; i<10; i++){
       if ($('.color'+i))
         $('.color'+i).removeClass('color'+i)
