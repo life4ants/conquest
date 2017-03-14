@@ -2,6 +2,82 @@ import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 
 class MyModal extends Component {
+  constructor(){
+    super()
+    this.state = {
+      value: 10,
+      error: ''
+    }
+  }
+
+  onChange(e){
+    e.preventDefault()
+    const value = e.target.value
+    const max = this.props.value < 20 ? this.props.value : 20
+    if (value > 0 && value <= max)
+      this.setState({value: e.target.value, error: ''})
+    else
+      this.setState({value: '', error: 'value must be between 1 and '+max})
+  }
+
+  content(){
+    if (this.props.allowed === 'yes'){
+      var max = this.props.value < 20 ? this.props.value : 20
+      return (
+        <Modal.Body>
+          <label>Enter number of troops to land: </label>
+          <input type="number" min='1' max={max} value={this.state.value} onChange={this.onChange.bind(this)} autoFocus />
+          <i>  {this.state.error}</i>
+          <p>
+            You can only land troops once per ocean per turn. Up to 20 troops may be landed.
+          </p>
+        </Modal.Body> )
+    }
+    else {
+      let content =
+        this.props.allowed === 'notThisTurn' ? ' this turn. You can only land troops once per ocean per turn.' : '.';
+      return (
+        <Modal.Body>
+          <p>
+            No more troops can be landed from the {this.props.name}
+            {content}
+          </p>
+        </Modal.Body>)
+    }
+  }
+
+  buttons(){
+    if (this.props.allowed === 'yes'){
+      return (
+        <Modal.Footer>
+          <button className='btn' onClick={() => this.cancel()}>Cancel</button>
+          <button className='btn btn-primary' onClick={() => this.submit()}>Ok</button>
+        </Modal.Footer> )
+    }
+    else{
+      return (
+        <Modal.Footer>
+          <button className='btn' onClick={() => this.cancel()}>Ok</button>
+        </Modal.Footer> )
+    }
+  }
+
+  cancel(){
+    this.setState({error: ''}) //reset value here if we want (and below)
+    this.props.cancel()
+  }
+
+  submit(){
+    const value = this.state.value
+    const max = this.props.value < 20 ? this.props.value : 20
+    if (value > 0 && value <= max){
+      this.setState({error: ''}) // (right here)
+      this.props.submit(this.state.value)
+    }
+    else
+      this.setState({value: max, error: 'value must be between 1 and '+max})
+  }
+
   render() {
 
     return (
@@ -11,32 +87,10 @@ class MyModal extends Component {
         aria-labelledby="ModalHeader"
       >
         <Modal.Header >
-          <Modal.Title id='ModalHeader'>A Title Goes here</Modal.Title>
+          <Modal.Title id='ModalHeader'>{this.props.title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <p>Some Content here</p>
-          <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </p>
-          <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </p>
-        </Modal.Body>
-        <Modal.Footer>
-          <button className='btn btn-primary' onClick={this.props.saveAndClose}>
-            Save
-          </button>
-        </Modal.Footer>
+        {this.content()}
+        {this.buttons()}
       </Modal>
     );
   }

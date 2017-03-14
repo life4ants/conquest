@@ -1,36 +1,14 @@
 import React from 'react';
 
-var Svg = <svg version='1.1' height='25' width='25' viewbox='0 0 26.5 28.5'><path style='fill:#00FFFF; stroke:black; stroke-width:1.5; stroke-linejoin:round'd='m0.5,1 12,5.5 12,-5.5 -5.5,12 5.5,12 -12,-5.5 -12,5.5 5.5,-12 z'/></svg>;
+var Svg = <svg version='1.1' height='25' width='25' viewBox='0 0 26.5 28.5' id='svg1'><path d='m0.5,1 12,5.5 12,-5.5 -5.5,12 5.5,12 -12,-5.5 -12,5.5 5.5,-12 z'/></svg>;
 var GameMap =
 (<svg
-   xmlns:dc="http://purl.org/dc/elements/1.1/"
-   xmlns:cc="http://creativecommons.org/ns#"
-   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-   xmlns:svg="http://www.w3.org/2000/svg"
-   xmlns="http://www.w3.org/2000/svg"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    version="1.0"
    width="1200"
    height="1317"
    viewBox="0 0 1253 1375"
    preserveAspectRatio="xMidYMid meet"
    id="svg9860">
-  <defs
-     id="defs10105" />
-  <metadata
-     id="metadata9868">
-Created by potrace 1.13, written by Peter Selinger 2001-2015
-<rdf:RDF>
-  <cc:Work
-     rdf:about="">
-    <dc:format>image/svg+xml</dc:format>
-    <dc:type
-       rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-    <dc:title />
-  </cc:Work>
-</rdf:RDF>
-</metadata>
   <g style="fill:#ffd; stroke:none" id="g5">
     <g
        style="fill:#ffd; stroke:none"
@@ -699,4 +677,4 @@ Created by potrace 1.13, written by Peter Selinger 2001-2015
      sodipodi:nodetypes="cc" />
 </svg>);
 
-export default Svg;
+export default GameMap;

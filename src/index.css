@@ -25,3 +25,11 @@ body {
     margin: 80px 10px 0;
   }
 }
+
+
+#svg1{
+  fill: #00FFFF;
+  stroke: black;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}

@@ -29,7 +29,14 @@
 .waterBlue { fill: #3bf; }
 .bahamas { fill: #08b; }
 .grey { fill: #999; }
-.map { fill: #fdb; stroke: #f00; stroke-width: 0;}
+.map { fill: #dcd; stroke: #f00; stroke-width: 0;}
+
+.connector-line{
+  fill:none;
+  stroke: #f00;
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
 
 
 .color0 { fill: #004500; }
@@ -43,6 +50,6 @@
 .color8 { fill: #764710; }
 .color9 { fill: #FF8000; }
 
-.color10 {fill: #fd9;}
-.color11 {fill: #fee;}
-.color12 {fill: #ec7;}
+.color10 {fill: #ffddb8;}
+.color11 {fill: #ffddcf;}
+.color12 {fill: #ffdd9e;}

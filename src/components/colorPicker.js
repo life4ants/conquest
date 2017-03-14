@@ -14,11 +14,11 @@ class ColorPicker extends Component {
 
   renderPair(a, b){
     return (
-      <div>
+      <div key={a} >
         <ColorBox onClick={()=>{this.props.onClick(this.props.id, Colors[a], a)}}
-                  color={Colors[a]} key={this.props.id+'color'+a} />
+                  color={Colors[a]}  />
         <ColorBox onClick={()=>{this.props.onClick(this.props.id, Colors[b], b)}}
-                  color={Colors[b]} key={this.props.id+'color'+b} />
+                  color={Colors[b]}  />
       </div>
       )
   }

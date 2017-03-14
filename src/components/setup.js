@@ -5,14 +5,14 @@ class Setup extends Component {
   renderLI(i){
     return (
         <li>
-          <h3>Player {i}</h3>
+          <h3>Player {i+1}</h3>
           <div className='inputs'>
             <label>Name: </label>
-            <input onChange={this.props.onChange} id={'player'+i} value={this.props.names[i-1]}/>
+            <input onChange={this.props.onChange} id={i} value={this.props.names[i]}/>
             <label>   Color (pick one): </label>
-            <div className="color-preview" style={{backgroundColor: this.props.color[i-1]}}></div>
+            <div className="color-preview" style={{backgroundColor: this.props.color[i]}}></div>
           </div>
-          <ColorPicker onClick={this.props.onClick} key={'picker'+i} id={'player'+i}/>
+          <ColorPicker onClick={this.props.onClick} id={i}/>
         </li>
       )
   }
@@ -28,8 +28,8 @@ class Setup extends Component {
     return (
       <div className='overlay'>
         <ul className="setup">
+          {this.renderLI(0)}
           {this.renderLI(1)}
-          {this.renderLI(2)}
           {this.errors()}
           <button className="btn btn-danger" onClick={this.props.cancel}>Cancel</button>
           <button className="btn btn-primary" onClick={this.props.newGame}>Start Game</button>
