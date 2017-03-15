@@ -1,48 +1,57 @@
 .territoryBoxes{
-    position: absolute;
-    pointer-events: none;
-    top: 40px;
+  position: absolute;
+  pointer-events: none;
+  top: 40px;
 }
 
-.T-label
+.label0
 {
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -o-user-select: none;
-     user-select: none;
-    font-size: 1.0em;
-    font-weight: bold;
-    font-family: serif;
-    color: black;
-    background-color: #c70;
-    border-radius: 50%;
-    height: 24px;
-    min-width: 24px;
-    padding: 3px;
+  background-color: #c70;
+  border-radius: 50%;
+  height: 24px;
+  min-width: 24px;
+  padding: 3px;
 }
 
-.countrybox .danger{
-    background-color: #b20;
+.label1{
+
+  background-color: #b20;
+  border-radius: 10%;
+  height: 24px;
+  min-width: 24px;
+  padding: 3px;
 }
 
-.icon
-{
-    position: absolute;
-    top: 11px;
+.label2{
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  background-color: #222;
+  color: #ddd;
+  border-radius: 10%;
+  font-size: 11px;
+  font-weight: normal;
+  border-radius: 35%;
+  height: 18px;
+  min-width: 18px;
+  padding: 1.5px;
 }
 
 .countrybox
 {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 25px;
-    height: 35px;
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: 1.0em;
+  font-weight: bold;
+  font-family: serif;
+  color: black;
+  width: 25px;
+  height: 35px;
 }
-#territory1 { left: 160px; top: 90px; }
+
+ #territory1 { left: 160px; top: 90px; }
  #territory2 { left: 280px; top: 170px; }
  #territory3 { left: 330px; top: 400px; }
  #territory4 { left: 440px; top: 220px; }

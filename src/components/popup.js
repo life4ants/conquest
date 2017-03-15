@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 
-class MyModal extends Component {
-  constructor(){
+class Popup extends Component {
+  constructor(props){
     super()
     this.state = {
-      value: 10,
+      value: props.value,
       error: ''
     }
   }
@@ -13,19 +13,19 @@ class MyModal extends Component {
   onChange(e){
     e.preventDefault()
     const value = e.target.value
-    if (value > 0 && value <= this.props.data.max)
+    const max = this.props.value < 20 ? this.props.value : 20
+    if (value > 0 && value <= max)
       this.setState({value: Number(e.target.value), error: ''})
     else
-      this.setState({value: '', error: 'value must be between 1 and '+this.props.data.max})
+      this.setState({value: '', error: 'value must be between 1 and '+max})
   }
 
   content(){
-    if (this.props.data.allowed === 'yes'){
+    if (this.props.allowed === 'yes'){
       return (
         <Modal.Body>
           <label>Enter number of troops to land: </label>
-          <input type="number" min='1' max={this.props.data.max}
-                 value={this.state.value} onChange={this.onChange.bind(this)} autoFocus />
+          <input type="number" min='1' max={this.props.max} value={this.state.value} onChange={this.onChange.bind(this)} autoFocus />
           <i>  {this.state.error}</i>
           <p>
             You can only land troops once per ocean per turn. Up to 20 troops may be landed.
@@ -34,11 +34,11 @@ class MyModal extends Component {
     }
     else {
       let content =
-        this.props.data.allowed === 'notThisTurn' ? ' this turn. You can only land troops once per ocean per turn.' : '.';
+        this.props.allowed === 'notThisTurn' ? ' this turn. You can only land troops once per ocean per turn.' : '.';
       return (
         <Modal.Body>
           <p>
-            No more troops can be landed from the {this.props.data.name}
+            No more troops can be landed from the {this.props.name}
             {content}
           </p>
         </Modal.Body>)
@@ -46,7 +46,7 @@ class MyModal extends Component {
   }
 
   buttons(){
-    if (this.props.data.allowed === 'yes'){
+    if (this.props.type === 'confirm'){
       return (
         <Modal.Footer>
           <button className='btn' onClick={() => this.cancel()}>Cancel</button>
@@ -68,23 +68,16 @@ class MyModal extends Component {
 
   submit(){
     const value = this.state.value
-    if (value > 0 && value <= this.props.data.max){
+    const max = this.props.max
+    if (value > 0 && value <= max){
       this.setState({error: ''}) // (right here)
       this.props.submit(this.state.value)
     }
     else
-      this.setState({value: this.props.data.max, error: 'value must be between 1 and '+this.props.data.max})
+      this.setState({value: max, error: 'value must be between 1 and '+max})
   }
 
   render() {
-    if (this.props.open){
-      var content = this.content()
-      var buttons = this.buttons()
-    }
-    else {
-      content = ''
-      buttons = ''
-    }
 
     return (
       <Modal
@@ -95,14 +88,14 @@ class MyModal extends Component {
         <Modal.Header >
           <Modal.Title id='ModalHeader'>{this.props.title}</Modal.Title>
         </Modal.Header>
-        {content}
-        {buttons}
+        {this.props.content}
+        {this.buttons()}
       </Modal>
     );
   }
 }
 
-export default MyModal;
+export default Popup;
 
 
 

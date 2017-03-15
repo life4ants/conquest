@@ -9,6 +9,17 @@ const Game = {
     }
   },
 
+  colorBoard(){
+    for (let i=1; i<91; i++){
+      if (this.coasts[0].includes(i))
+        $('.territory'+i).addClass('color10')
+      else if (this.coasts[1].includes(i))
+        $('.territory'+i).addClass('color11')
+      else if (this.coasts[2].includes(i))
+        $('.territory'+i).addClass('color12')
+    }
+  },
+
   canFight(country1, country2){
     for (let i = 0; i<this.territoryInfo[country1].borders.length; i++){
       if (this.territoryInfo[country1].borders[i] === country2)
