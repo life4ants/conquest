@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 
 class MyModal extends Component {
-  constructor(){
+  constructor(props){
     super()
     this.state = {
       value: 10,
@@ -16,16 +16,17 @@ class MyModal extends Component {
     if (value > 0 && value <= this.props.data.max)
       this.setState({value: Number(e.target.value), error: ''})
     else
-      this.setState({value: '', error: 'value must be between 1 and '+this.props.data.max})
+      if (!this.state.error)
+        this.setState({error: 'value must be between 1 and '+this.props.data.max})
   }
 
   content(){
     if (this.props.data.allowed === 'yes'){
       return (
         <Modal.Body>
-          <label>Enter number of troops to land: </label>
+          <label>Enter number of troops to land:</label>
           <input type="number" min='1' max={this.props.data.max}
-                 value={this.state.value} onChange={this.onChange.bind(this)} autoFocus />
+                 value={this.state.value} autoFocus />
           <i>  {this.state.error}</i>
           <p>
             You can only land troops once per ocean per turn. Up to 20 troops may be landed.
@@ -70,10 +71,10 @@ class MyModal extends Component {
     const value = this.state.value
     if (value > 0 && value <= this.props.data.max){
       this.setState({error: ''}) // (right here)
-      this.props.submit(this.state.value)
+      this.props.submit(value)
     }
     else
-      this.setState({value: this.props.data.max, error: 'value must be between 1 and '+this.props.data.max})
+      this.setState({value: '', error: 'value must be between 1 and '+this.props.data.max})
   }
 
   render() {

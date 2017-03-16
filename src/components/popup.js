@@ -5,48 +5,72 @@ class Popup extends Component {
   constructor(props){
     super()
     this.state = {
-      value: props.value,
+      value: '',
+      numLeft: 0,
       error: ''
     }
+  }
+  // Expected Props:
+  // for all: cancel
+// for info: content, title, type
+// for spinbox: content, title, type, label, max, action
+  componentWillReceiveProps(nextProps){
+    if (nextProps.type === 'double-spinbox'){
+      var value = Math.round(nextProps.max / 2)
+    }
+    else
+      value = nextProps.max
+    const numLeft = nextProps.max - value
+    this.setState({value: value, numLeft: numLeft})
   }
 
   onChange(e){
     e.preventDefault()
-    const value = e.target.value
-    const max = this.props.value < 20 ? this.props.value : 20
+    const value = Number(e.target.value)
+    const max = this.props.max
     if (value > 0 && value <= max)
-      this.setState({value: Number(e.target.value), error: ''})
+      this.setState({value: value, numLeft: max-value, error: ''})
     else
-      this.setState({value: '', error: 'value must be between 1 and '+max})
+      this.setState({value: value, error: 'value must be between 1 and '+this.props.max})
   }
 
   content(){
-    if (this.props.allowed === 'yes'){
+    if (this.props.type === 'spinbox'){
       return (
         <Modal.Body>
-          <label>Enter number of troops to land: </label>
-          <input type="number" min='1' max={this.props.max} value={this.state.value} onChange={this.onChange.bind(this)} autoFocus />
+          <label>{this.props.label}</label>
+          <input type="number" min='1' max={this.props.max} value={this.state.value} onChange={(e) => this.onChange(e)} autoFocus />
           <i>  {this.state.error}</i>
           <p>
-            You can only land troops once per ocean per turn. Up to 20 troops may be landed.
+            {this.props.content}
           </p>
         </Modal.Body> )
     }
-    else {
-      let content =
-        this.props.allowed === 'notThisTurn' ? ' this turn. You can only land troops once per ocean per turn.' : '.';
+    else if (this.props.type === 'double-spinbox'){
+      return (
+        <Modal.Body>
+          <label>{this.props.label}</label>
+          <input type="number" min='1' max={this.props.max} value={this.state.value} onChange={(e) => this.onChange(e)} autoFocus />
+          <i>  {this.state.error}</i><br />
+          <label>This will leave behind:</label>
+          <input value={this.state.numLeft} type='number' readOnly/>
+          <p>
+            {this.props.content}
+          </p>
+        </Modal.Body> )
+    }
+    else if (this.props.type === 'info') {
       return (
         <Modal.Body>
           <p>
-            No more troops can be landed from the {this.props.name}
-            {content}
+            {this.props.content}
           </p>
         </Modal.Body>)
     }
   }
 
   buttons(){
-    if (this.props.type === 'confirm'){
+    if (['spinbox', 'double-spinbox'].includes(this.props.type)){
       return (
         <Modal.Footer>
           <button className='btn' onClick={() => this.cancel()}>Cancel</button>
@@ -62,19 +86,18 @@ class Popup extends Component {
   }
 
   cancel(){
-    this.setState({error: ''}) //reset value here if we want (and below)
+    this.setState({error: ''})
     this.props.cancel()
   }
 
   submit(){
     const value = this.state.value
-    const max = this.props.max
-    if (value > 0 && value <= max){
-      this.setState({error: ''}) // (right here)
-      this.props.submit(this.state.value)
+    if (value > 0 && value <= this.props.max){
+      this.setState({error: ''})
+      this.props.action(value)
     }
     else
-      this.setState({value: max, error: 'value must be between 1 and '+max})
+      this.setState({value: '', error: 'value must be between 1 and '+this.props.max})
   }
 
   render() {
@@ -82,13 +105,14 @@ class Popup extends Component {
     return (
       <Modal
         show={this.props.open}
+        keyboard={true}
         backdrop="static"
         aria-labelledby="ModalHeader"
       >
         <Modal.Header >
           <Modal.Title id='ModalHeader'>{this.props.title}</Modal.Title>
         </Modal.Header>
-        {this.props.content}
+        {this.content()}
         {this.buttons()}
       </Modal>
     );

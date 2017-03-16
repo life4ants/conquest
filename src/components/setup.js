@@ -27,13 +27,15 @@ class Setup extends Component {
   render() {
     return (
       <div className='overlay'>
-        <ul className="setup">
-          {this.renderLI(0)}
-          {this.renderLI(1)}
-          {this.errors()}
-          <button className="btn btn-danger" onClick={this.props.cancel}>Cancel</button>
-          <button className="btn btn-primary" onClick={this.props.newGame}>Start Game</button>
-        </ul>
+        <div className='overlay-box'>
+          <ul className="setup">
+            {this.renderLI(0)}
+            {this.renderLI(1)}
+            {this.errors()}
+            <button className="btn btn-danger" onClick={this.props.cancel}>Cancel</button>
+            <button className="btn btn-primary" onClick={this.props.newGame}>Start Game</button>
+          </ul>
+        </div>
       </div>
     );
   }

@@ -2,6 +2,7 @@
 header {
   background-color: #058005;
   position: fixed;
+  border-bottom: 3px solid #444;
   top: 0px;
   left: 0px;
   width: 100vw;
@@ -63,7 +64,7 @@ ul button{
 }
 
 #wrapper{
-  background-color: #111;
+  background-color: #333;
   width: 1200px;
   margin: auto;
   padding-top: 40px;
@@ -81,6 +82,14 @@ footer{
  background: rgba(110, 256, 110, 0.9);
  color: #344;
  font-size: 16px;
+}
+
+label{
+  margin-right: 5px;
+}
+
+.modal-dialog input{
+  width: 40px;
 }
 
 @media(min-width:768px) {

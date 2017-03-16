@@ -4,37 +4,36 @@ import Setup from './setup'
 import Board from './board'
 import Colors from './colors'
 import GameData from './gameData'
+import GameMap from './game_map'
 import Footer from './footer'
 import Alert from './alert'
-import MyModal from './myModal'
+import Popup from './popup'
 import $ from 'jquery'
-
-var o = {}
 
 class Game extends Component {
 
   constructor(){
     super();
     this.state = {
-      phase: 'playing', //setup **TEST**
+      phase: 'setup', //playing **TEST**
       players: [
         {name: 'Andy',
         color: Colors[4],
         id: 4,
         terrCount: 0,
         reserves: [
-          {name: 'Pacific', value: 50, allowed: 'yes'},
-          {name: 'Alantic', value: 50, allowed: 'yes'},
-          {name: 'Carribean', value: 50, allowed: 'yes'}],
+          {name: 'Pacific', value: 100, allowed: 'yes'},
+          {name: 'Alantic', value: 100, allowed: 'yes'},
+          {name: 'Carribean', value: 100, allowed: 'yes'}],
         marches: 5},
         {name: 'Ben',
         color: Colors[7],
         id: 7,
         terrCount: 0,
         reserves: [
-          {name: 'Pacific', value: 50, allowed: 'yes'},
-          {name: 'Alantic', value: 50, allowed: 'yes'},
-          {name: 'Carribean', value: 50, allowed: 'yes'}],
+          {name: 'Pacific', value: 100, allowed: 'yes'},
+          {name: 'Alantic', value: 100, allowed: 'yes'},
+          {name: 'Carribean', value: 100, allowed: 'yes'}],
         marches: 5}],
       turnIndex: (Math.random() < .5 ? 0 : 1),
       setupError: '',
@@ -45,13 +44,12 @@ class Game extends Component {
       alert: {open: false, content: '', center: false, type: 'alert'},
       round: 1,
       selectedTerr: '',
-      modal: {open: false, title: '', data: {} }
+      popup: {open: false, type: 'none'}
     }
   }
 
   componentDidMount(){
-    o.game = this
-    GameData.colorBoard() //[remove] **TEST**
+    //GameData.colorBoard() //[remove] **TEST**
   }
 
   initializeReserves(){
@@ -79,13 +77,17 @@ class Game extends Component {
     this.closeAlert()
     let index = this.state.turnIndex
     let players = this.state.players
-    players.forEach((player) =>{
-      for(let j=0; j<3; j++){
-        player.reserves[j].allowed = player.reserves[j].value > 0 ? 'yes' : 'no'
+    for(let j=0; j<3; j++){
+      players[index].reserves[j].allowed = players[index].reserves[j].value > 0 ? 'yes' : 'no'
+    }
+    players[index].marches = 5
+    let reserves = this.state.reserves
+    for (let i=1; i<reserves.length; i++){
+      if (reserves[i][0] !== 0 && reserves[i][1] !== 0){
+        this.runAttack(i)
       }
-    });
-    this.setState({players: players})
-    index === 0 ? this.setState({turnIndex: 1}) : this.setState({turnIndex: 0});
+    }
+    this.setState({players: players, turnIndex: index === 0 ? 1 : 0})
   }
 
   confirmEndGame(){
@@ -94,6 +96,64 @@ class Game extends Component {
 
   endGame(){
     this.props.cancel()
+  }
+
+  runAttack(terr){
+    let reserves = this.state.reserves
+    let dID = this.state.owners[terr]
+    let aID = dID === 1 ? 0 : 1
+    // decide who's bigger
+    if (reserves[terr][dID] < reserves[terr][aID]){
+      var bg = reserves[terr][aID]
+      var owner = 'sm'
+      var sm = reserves[terr][dID]
+    }
+    else {
+      bg = reserves[terr][dID]
+      sm = reserves[terr][aID]
+      owner = 'bg'
+    }
+    // kill them off
+    if (sm < 4){
+      bg -= sm
+      sm = 0
+    }
+    else if (sm < 9){
+      bg -= Math.floor(Math.random() * 3 + (sm-1))
+      sm = 0
+      if (bg < 0){
+          bg++
+          sm++
+        }
+    }
+    else if (sm < 12){
+      bg -= Math.floor(Math.random() * 4 + (sm-1))
+      sm = 0
+
+    }
+    else {
+      bg -= Math.floor(Math.random() * 5 + 10)
+      sm -= 12
+    }
+    // adjust:
+    if (bg < 0){
+      let aj = -bg
+      bg += aj
+      sm += aj
+    }
+
+    reserves[terr][dID] = owner === 'bg' ? bg : sm // the owner/defender
+    reserves[terr][aID] = owner === 'bg' ? sm : bg // the attacker
+
+    if (reserves[terr][dID] === 0){ // defender reserves
+      if (reserves[terr][aID] === 0){ // attacker reserves
+        this.changeColor(terr, '')
+      }
+      else {
+        this.changeColor(terr, this.state.players[aID].id)
+      }
+    }
+    this.setState({reserves: reserves})
   }
 
             // -----Map interaction:-----
@@ -106,9 +166,10 @@ class Game extends Component {
         this.marchFrom(i)
         break
       case 'march2':
-        this.marchTo(i, this.state.selectedTerr)
+        this.marchTo(this.state.selectedTerr, i)
         break
       default:
+        this.changeColor(i, 5)
     }
   }
 
@@ -117,22 +178,41 @@ class Game extends Component {
      $(id).css("stroke-width", "4");
   }
 
-  deselect() {
-    let terr = this.state.selectedTerr
-    this.setState({selectedTerr: ''})
+  deselect(terr) {
     let id = ".territory"+terr;
     $(id).css("stroke-width", "0");
   }
 
   changeColor(id, color){
     var classNames = $(".territory"+id)[0].className.baseVal.split(/\s+/);
-    var newClass = classNames[0] + ' color'+color;
-    $('.territory'+id).removeClass().addClass(newClass);
+    if (color){
+      let newClass = classNames[0] + ' color'+color;
+      $('.territory'+id).removeClass().addClass(newClass);
+    }
+    else
+      $('.territory'+id).removeClass().addClass(classNames[0]);
   }
 
             // -----Marching Troops:-------
+  addTroopsTo(terr, troops){
+    let players = this.state.players
+    let i = this.state.turnIndex
+    let reserves = this.state.reserves
+    let owners = this.state.owners
+    if (owners[terr] === 2){
+      reserves[terr][i] += (troops + reserves[terr][2])
+      reserves[terr][2] = 0
+      owners[terr] = i
+      this.changeColor(terr, players[i].id)
+    }
+    else
+      reserves[terr][i] += troops
+
+    this.setState({reserves: reserves, owners: owners })
+  }
+
   cancelMarch(){
-    this.deselect()
+    this.deselect(this.state.selectedTerr)
     this.setState({phase: 'playing', footer: ''})
   }
 
@@ -147,10 +227,40 @@ class Game extends Component {
 
   marchTo(terr1, terr2){
     if (GameData.canFight(terr1, terr2)){
-
+      this.select(terr2)
+      this.marchingModal(terr1, terr2)
     }
     else
       this.openAlert("Troops can only march to a bordering Territory!", true, 'alert')
+  }
+
+  marchingModal(terr1, terr2){
+    let title = "Marching Troops"
+    let label = "Enter number of Troops to move:"
+    let max = this.state.reserves[terr1][this.state.turnIndex]
+    this.openPopup('', title, 'double-spinbox', label, max, (i) => this.moveTroops(i), [terr1, terr2])
+  }
+
+  moveTroops(value){
+    let terrs = this.state.popup.id
+    this.closePopup()
+    this.addTroopsTo(terrs[1], value)
+    let reserves = this.state.reserves
+    let players = this.state.players
+    let i = this.state.turnIndex
+    reserves[terrs[0]][i] -= value
+    players[i].marches -= 1
+    if (players[i].marches <= 0){
+      var footer = ''
+      var phase = 'playing'
+    }
+    else {
+      footer = ['march1']
+      phase = 'march1'
+    }
+    this.deselect(terrs[1])
+    this.deselect(terrs[0])
+    this.setState({selectedTerr: '', reserves: reserves, phase: phase, footer: footer, players: players})
   }
 
   validateMarch(){
@@ -172,100 +282,32 @@ class Game extends Component {
 
             // ------Popup:------
   closePopup(){
-
-  }
-
-  openPopup(){
-
-  }
-
-  closeModal(){
-    this.setState({ modal: {open: false, title: '', data: {} }})
-  }
-
-  openModal(id){
-    let player = this.currentPlayer()
-    let name = player.reserves[id].name
-    let title = "Land troops from the "+ name
-    let allowed = player.reserves[id].allowed
-    let value = player.reserves[id].value
-    let max = value < 20 ? value : 20
-    this.setState({ modal:
-                      {open: true,
-                      title: title,
-                      data: {name: name, id: id, max: max, allowed: allowed, value: value} }
-                    })
-  }
-
-  modalAction(value){
-    let id = this.state.modal.data.id;
-    this.closeModal()
-    this.landReserves(id, value)
-  }
-
-            // -------Render Helpers:-------
-  pickComponent(){
-    if (this.state.phase === 'setup'){
-      return (<Setup onClick={this.setColor.bind(this)} names={[this.state.players[0].name, this.state.players[1].name]}
-                  onChange={this.setName.bind(this)} error={this.state.setupError}
-                  color={[this.state.players[0].color, this.state.players[1].color]}
-                  cancel={this.props.cancel} newGame={this.newGame.bind(this)} /> )
+    if (typeof this.state.popup.id === 'object'){
+      this.deselect(this.state.popup.id[1])
+      var footer = ['march2']
     }
-    else {
-      return <Board reserves={this.state.reserves} owners={this.state.owners} />
-    }
+    else footer = ''
+    this.setState({footer: footer, popup: {open: false, type: 'none'}})
   }
 
-  renderHeader(){
-    if (this.state.phase === 'setup')
-      return <Header phase={this.state.phase}/>
-    else if (this.state.phase === 'playing') {
-      return (<Header phase={this.state.phase} player={this.currentPlayer()}
-                cancelTurn={() => this.confirmEndTurn()} endGame={() => this.confirmEndGame()}
-                landReserves={(action, value) => this.landReserves(action, value)}
-                marchTroops={() => this.validateMarch()} openModal={(i) => this.openModal(i)}
-        />)
-    }
-    else if (this.state.phase === 'reserves') {
-      return (<Header phase={this.state.phase} player={this.currentPlayer()}
-                cancelTurn={() => this.cancelReserves()} endGame={() => this.confirmEndGame()}
-                landReserves={() => {}}
-                marchTroops={() => {}}
-        />)
-    }
-    else if (['march1', 'march2'].includes(this.state.phase)) { //working on this **WIP**
-      return (<Header phase={this.state.phase} player={this.currentPlayer()}
-                cancelTurn={() => this.cancelMarch()} endGame={() => this.confirmEndGame()}
-                landReserves={() => {}}
-                marchTroops={() => {}}
-        />)
-    }
+  openPopup(content, title, type, label, max, action, id){
+    this.setState({footer: '', popup: {open: true, content: content, title: title, type: type,
+                                      label: label, max: max, action: action, id: id}})
   }
 
             // -----Reserves:-----
-  addReserves(id){ // id is the territory we are adding to
+  addReserves(terr){ // id is the territory we are adding to
     let troops = this.state.tempTroops // coast with an id (0-2), and value (num of troops)
-    if (GameData.coasts[troops.id].includes(id)){
-      let players = this.state.players
-      let i = this.state.turnIndex
-      let reserves = this.state.reserves
-      let owners = this.state.owners
-      if (owners[id] === 2){
-        reserves[id][i] += (troops.value + reserves[id][2])
-        reserves[id][2] = 0
-        owners[id] = i
-        this.changeColor(id, players[i].id)
-      }
-      else
-        reserves[id][i] += troops.value
-
+    let players = this.state.players
+    let i = this.state.turnIndex
+    if (GameData.coasts[troops.id].includes(terr)){
+      this.addTroopsTo(terr, troops.value)
       players[i].reserves[troops.id].value -= troops.value
       players[i].reserves[troops.id].allowed = players[i].reserves[troops.id].value > 0 ? 'notThisTurn' : 'no';
-      this.setState({tempTroops: [], phase: 'playing', footer: '',
-                     reserves: reserves, owners: owners, players: players })
+      this.setState({tempTroops: [], phase: 'playing', footer: '', players: players })
     }
     else {
-      let content = 'That country is not on the '+ this.currentPlayer().reserves[troops.id].name+" coast!"
+      let content = 'That country is not on the '+ players[i].reserves[troops.id].name+" coast!"
       this.openAlert(content, true, 'alert')
     }
   }
@@ -274,9 +316,30 @@ class Game extends Component {
     this.setState({tempTroops: [], phase: 'playing', footer: ''})
   }
 
-  landReserves (id, value){
+  landReserves (value){
+    let id = this.state.popup.id;
+    this.closePopup()
     let coast = this.currentPlayer().reserves[id]
     this.setState({tempTroops: {value: value, id: id}, phase: 'reserves', footer: ['reserves', coast.name]})
+  }
+
+  reservesModal(id){
+    let player = this.currentPlayer()
+    let name = player.reserves[id].name
+    let title = "Land troops from the "+ name
+    let allowed = player.reserves[id].allowed
+    let value = player.reserves[id].value
+    let max = value < 20 ? value : 20
+    if (allowed === 'yes'){
+      let content = "You can only land troops once per ocean per turn. Up to 20 troops may be landed."
+      let label = "Enter number of troops to land:"
+      this.openPopup(content, title, 'spinbox', label, max, (i) => this.landReserves(i), id)
+    }
+    else {
+      let content = "No more troops can be landed from the " +name
+      content += allowed === 'notThisTurn' ? ' this turn. You can only land troops once per ocean per turn.' : '.';
+      this.openPopup(content, title, 'info')
+    }
   }
 
           // -------Setup Form:-------
@@ -301,6 +364,7 @@ class Game extends Component {
         this.state.players[0].color !== '' &&
         this.state.players[1].color !== ''
       ){
+      GameData.clearBoard()
       GameData.colorBoard()
       this.setState({phase: 'playing', setupError: '', header: 'playing'})
     }
@@ -308,44 +372,49 @@ class Game extends Component {
       this.setState({setupError: 'please enter names and select colors for both players'})
     }
   }
-  /*
-  setTerritory(i){
-    var owners = this.state.owners
-    owners[i] = this.state.player[this.state.turnIndex].id
-    this.setState({owners: owners})
-  }
 
-  fillTerritories(){
-    let obj1 = Array(91)
-    let obj2 = Array(91)
-    for (let i=1; i<91; i++){
-      obj1[i] = 10
-      if (GameData.coasts[0].includes(i))
-        obj2[i] = 10
-      else if (GameData.coasts[1].includes(i))
-        obj2[i] = 11
-      else if (GameData.coasts[2].includes(i))
-        obj2[i] = 12
+              // -------Render Helpers:-------
+  pickComponent(){
+    if (this.state.phase === 'setup'){
+      return (<Setup onClick={this.setColor.bind(this)} names={[this.state.players[0].name, this.state.players[1].name]}
+                  onChange={this.setName.bind(this)} error={this.state.setupError}
+                  color={[this.state.players[0].color, this.state.players[1].color]}
+                  cancel={this.props.cancel} newGame={this.newGame.bind(this)} /> )
     }
-    this.setState({reserves: obj1, owners: obj2})
+    else {
+      return <Board reserves={this.state.reserves} owners={this.state.owners} />
+    }
   }
 
-  initializeTerritories(){
-    var player1 = Math.floor(Math.random() * 45) + 1;
-    var player2 = Math.floor(Math.random() * 45) + 46;
-    var obj = Array(91);
-    obj[player1] = this.state.players[0].id
-    obj[player2] = this.state.player[1].id
-    this.setState({owners: obj})
-    var obj2 = Array(91)
-    obj2[player1] = [10,5]
-    obj2[player2] = [8, 3]
-    this.setState({reserves: obj2})
+  renderHeader(){
+    if (this.state.phase === 'setup')
+      return <Header phase={this.state.phase}/>
+    else if (this.state.phase === 'playing') {
+      return (<Header phase={this.state.phase} player={this.currentPlayer()}
+                cancelTurn={() => this.confirmEndTurn()} endGame={() => this.confirmEndGame()}
+                marchTroops={() => this.validateMarch()} reserves={(i) => this.reservesModal(i)}
+        />)
+    }
+    else if (this.state.phase === 'reserves') {
+      return (<Header phase={this.state.phase} player={this.currentPlayer()}
+                cancelTurn={() => this.cancelReserves()} endGame={() => this.confirmEndGame()}
+                marchTroops={() => {}}
+        />)
+    }
+    else if (['march1', 'march2'].includes(this.state.phase)) {
+      return (<Header phase={this.state.phase} player={this.currentPlayer()}
+                cancelTurn={() => this.cancelMarch()} endGame={() => this.confirmEndGame()}
+                marchTroops={() => {}}
+        />)
+    }
   }
-  */
+
   render() {
     return (
       <div className="App">
+        <div id="wrapper">
+          <GameMap clicker={(i) => this.clicker(i)} />
+        </div>
         {this.renderHeader()}
         {this.pickComponent()}
         <Alert open={this.state.alert.open}
@@ -354,11 +423,14 @@ class Game extends Component {
                close={() => this.closeAlert()}
                action={() => this.state.alert.action()}
                type={this.state.alert.type} />
-        <MyModal open={this.state.modal.open}
-                 title={this.state.modal.title}
-                 submit={this.modalAction.bind(this)}
-                 cancel={this.closeModal.bind(this)}
-                 data={this.state.modal.data} />
+        <Popup open={this.state.popup.open}
+               cancel={() => this.closePopup()}
+               content={this.state.popup.content}
+               title={this.state.popup.title}
+               type={this.state.popup.type}
+               max={this.state.popup.max}
+               label={this.state.popup.label}
+               action={(i) => this.state.popup.action(i)} />
         <Footer value={this.state.footer} />
       </div>
     );
@@ -367,22 +439,6 @@ class Game extends Component {
 
 export default Game;
 
-
-window.clicker = function(i){
-  o.game.clicker(i)
-}
-
-
-window.getter = function(id){
-  switch(id){
-    case 'selected':
-      return o.game.state.selectedTerr
-    case 'reserves':
-      return o.game.state.reserves
-    case 'add':
-      o.game.add()
-      break
-    default:
-      return o.game.state
-  }
+window.getter = (i) => {
+  return $('.color'+i)
 }

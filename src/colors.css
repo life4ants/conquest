@@ -38,6 +38,12 @@
   stroke-linecap: round;
 }
 
+.border-line{
+  fill: none;
+  stroke: #ff0000;
+  stroke-width: 7;
+  stroke-linecap: round;
+}
 
 .color0 { fill: #004500; }
 .color1 { fill: #222; }
