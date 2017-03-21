@@ -56,6 +56,7 @@ class Header extends Component {
           <div className={"player-color"} style={{border: 'solid 5px '+this.props.player.color}}>
             <strong>Player: </strong>{this.props.player.name}
           </div>
+          <div><strong>Round: </strong>{this.props.round}</div>
         </div>
       )
   }

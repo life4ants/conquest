@@ -11,19 +11,20 @@ class App extends Component {
   constructor(){
     super();
     this.state = {
-      phase: 'welcome'
+      phase: 'welcome',
+      id: 'none'
     }
   }
 
-  endGame(){
-    this.setState({phase: 'welcome'})
+  cancel(){
+    this.setState({phase: 'welcome', id: 'none'})
   }
 
   pickComponent(){
     if (this.state.phase === 'welcome')
-      return <Welcome onClick={this.start.bind(this)} />
+      return <Welcome games={JSON.parse(localStorage.games)} newGame={() => this.start()} playGame={(i) => this.playGame(i)} />
     else if (this.state.phase === 'playing'){
-      return <Game cancel={this.endGame.bind(this)} />
+      return <Game cancel={() => this.cancel()} gameId={this.state.id} />
     }
   }
 
@@ -33,15 +34,16 @@ class App extends Component {
     }
   }
 
+  playGame(id){
+    this.setState({phase: 'playing', id: id})
+  }
 
   start(){
-    if (this.state.phase === 'welcome')
-      this.setState({phase: 'playing'})
-    else
-      this.setState({phase: 'welcome'})
+    this.setState({phase: 'playing'})
   }
 
   render() {
+    console.log('app rendered')
     return (
       <div className="App">
         {this.renderHeader()}

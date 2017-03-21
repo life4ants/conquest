@@ -1,4 +1,4 @@
-
+      /* Header: */
 header {
   background-color: #058005;
   position: fixed;
@@ -56,6 +56,42 @@ ul .inputs div, ul .inputs label, ul .inputs input {
 
 ul button{
   margin: 0px 5px;
+}
+
+      /* Other: */
+.games-list-box{
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.games-list-box > div{
+  padding: 10px;
+}
+
+.games-list-box ul{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.games-list-box li{
+  margin: 5px;
+  padding: 3px;
+}
+
+.games-list-box li:hover{
+  background-color: #458900;
+  cursor: pointer;
+  border-radius: 2px;
+  border: 3px groove #999;
+  padding: 0;
+}
+
+#game-buttons{
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
 }
 
 .board{
