@@ -1,7 +1,8 @@
 {
-  "name": "dominionation",
+  "name": "conquest",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://andrewdbuck.com/conquest",
   "dependencies": {
     "bootstrap": "^3.3.7",
     "jquery": "^3.1.1",

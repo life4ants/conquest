@@ -62,7 +62,7 @@ class Header extends Component {
   }
 
   render() {
-    let content = this.props.phase === 'setup' ? 'Welcome to the Domionionation Game' : this.showPlayer();
+    let content = this.props.phase === 'setup' ? 'Welcome to the Conquest Game' : this.showPlayer();
     return (
       <header>
         {content}
