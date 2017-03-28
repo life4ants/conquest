@@ -8,7 +8,7 @@ class Welcome extends Component {
         <div className="overlay-box">
           <h1>Welcome to Conquest!</h1>
           <p>
-            Rules? How do play? You're on your own. Figure it out.
+            Rules? How to play? Sorry, you're on your own. Figure it out.
           </p>
           <div className='games-list-box'>
             <div>
