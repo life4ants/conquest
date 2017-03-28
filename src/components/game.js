@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Header from './header'
 import Setup from './setup'
 import Board from './board'
-//import Colors from './colors'
 import GameData from './gameData'
 import GameMap from './game_map'
 import Footer from './footer'
@@ -18,9 +17,9 @@ class Game extends Component {
       : {
         name: '',
         id: 'none',
-        phase: 'setup', //playing **TEST**
+        phase: 'setup',
         players: [
-          {name: 'bob',
+          {name: '',
           color: '',
           id: '',
           terrCount: 0,
@@ -29,7 +28,7 @@ class Game extends Component {
             {name: 'Alantic', value: 100, allowed: 'yes'},
             {name: 'Carribean', value: 100, allowed: 'yes'}],
           marches: 8},
-          {name: 'bill',
+          {name: '',
           color: '',
           id: '',
           terrCount: 0,
@@ -52,10 +51,6 @@ class Game extends Component {
       this.state = state
   }
 
-  componentDidMount(){
-    //GameData.colorBoard() //[remove] **TEST**
-  }
-
   initializeReserves(){
     let obj = []
     for (let i=1; i<91; i++){
@@ -66,10 +61,6 @@ class Game extends Component {
 
   currentPlayer(){
     return this.state.players[this.state.turnIndex]
-  }
-
-  countTerritories(owners){
-    //owners.forEach()
   }
 
           // -----Endturn & EndGame:----
