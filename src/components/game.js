@@ -101,7 +101,7 @@ class Game extends Component {
       else
         this.saveGame([true, 'existing'])
     }
-  }
+}
 
   saveGame(data){
     if (data[0]) {
@@ -454,7 +454,6 @@ class Game extends Component {
   }
 
   render() {
-    console.log('game rendered')
     return (
       <div className="App">
         <div id="wrapper">

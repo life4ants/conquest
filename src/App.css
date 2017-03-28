@@ -80,12 +80,13 @@ ul button{
   padding: 3px;
 }
 
-.games-list-box li:hover{
-  background-color: #458900;
-  cursor: pointer;
-  border-radius: 2px;
-  border: 3px groove #999;
-  padding: 0;
+.games-list-box a {
+  color: #222;
+  font-size: 16px;
+}
+
+.games-list-box button{
+  padding: 3px 6px;
 }
 
 #game-buttons{

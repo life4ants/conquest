@@ -12,30 +12,43 @@ class App extends Component {
     super();
     this.state = {
       phase: 'welcome',
-      id: 'none'
+      id: 'none',
+      games: JSON.parse(localStorage.games)
     }
   }
 
   cancel(){
-    this.setState({phase: 'welcome', id: 'none'})
+    this.setState({phase: 'welcome', id: 'none', games: JSON.parse(localStorage.games)})
+  }
+
+  deleteGame(game){
+    console.log('delete game',game)
+    let games = JSON.parse(localStorage.games)
+    games.splice(game, 1)
+    localStorage.setItem('games', JSON.stringify(games))
+    this.setState({games: games})
   }
 
   pickComponent(){
     if (this.state.phase === 'welcome')
-      return <Welcome games={JSON.parse(localStorage.games)} newGame={() => this.start()} playGame={(i) => this.playGame(i)} />
+      return (<Welcome
+        games={this.state.games}
+        newGame={() => this.start()}
+        playGame={(i) => this.playGame(i)}
+        deleteGame={(i) => this.deleteGame(i)}/>)
     else if (this.state.phase === 'playing'){
       return <Game cancel={() => this.cancel()} gameId={this.state.id} />
     }
+  }
+
+  playGame(id){
+    this.setState({phase: 'playing', id: id})
   }
 
   renderHeader(){
     if (this.state.phase === 'welcome'){
       return <Header phase='setup'/>
     }
-  }
-
-  playGame(id){
-    this.setState({phase: 'playing', id: id})
   }
 
   start(){
