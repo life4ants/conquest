@@ -1,14 +1,19 @@
+.colorBoxContainer{
+  flex: 1 0 50px;
+  margin: 10px;
+  height: 60px
+}
+
 .colorBox{
   width: 50px;
   height: 50px;
-  margin: 10px;
+  margin: auto;
   transition: all 0.3s ease;
 }
 
 .colorBox:hover{
   width: 60px;
   height: 60px;
-  margin: 5px;
 }
 
 .colors-container{
@@ -17,13 +22,11 @@
   justify-content: center;
   padding: 10px;
 }
-.colors-container div{
-  display: flex;
-}
-
 .color-preview{
-  height: 1em;
-  width: 40px;
+  display: inline-block;
+  vertical-align: middle;
+  height: 35px;
+  width: 60px;
 }
 
 .waterBlue { fill: #3bf; }

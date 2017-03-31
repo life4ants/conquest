@@ -1,38 +1,3 @@
-      /* Header: */
-header {
-  background-color: #058005;
-  position: fixed;
-  border-bottom: 3px solid #444;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
-  height: 40px;
-  padding: 5px;
-  font-size: 16px;
-  z-index: 5;
-}
-.header-content{
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-content button, .header-content div {
-  margin: 0px 10px;
-}
-
-.header-content .small {
-  font-size: 12px;
-}
-
-.header-content .M-label{
-  font-size: 22px;
-  font-weight: bolder;
-  margin: 0px 5px;
-  vertical-align: middle;
-  color: #cFc;
-}
-
       /*Game Setup form: */
 .player-color{
   display: inline;
@@ -45,13 +10,15 @@ header {
   margin: 0;
 }
 
-ul .inputs{
+.inputs{
   display: flex;
   justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-ul .inputs div, ul .inputs label, ul .inputs input {
-  /*margin: 0px 15px;*/
+.inputs label, .inputs input {
+  margin: 0px 5px 10px 5px;
 }
 
 ul button{
@@ -78,9 +45,11 @@ ul button{
 .games-list-box li{
   margin: 5px;
   padding: 3px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.games-list-box a {
+.gameName {
   color: #222;
   font-size: 16px;
 }
@@ -90,9 +59,15 @@ ul button{
 }
 
 #game-buttons{
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+}
+
+#game-list{
+  flex: 2 0 200px;
+  margin-right: 50px;
 }
 
 .board{

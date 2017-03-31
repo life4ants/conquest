@@ -7,10 +7,14 @@ class Setup extends Component {
         <li>
           <h3>Player {i+1}</h3>
           <div className='inputs'>
-            <label>Name: </label>
-            <input onChange={this.props.onChange} id={i} value={this.props.names[i]}/>
-            <label>   Color (pick one): </label>
-            <div className="color-preview" style={{backgroundColor: this.props.color[i]}}></div>
+            <div>
+              <label>Name: </label>
+              <input onChange={this.props.onChange} id={i} value={this.props.names[i]}/>
+            </div>
+            <div>
+              <label>Color (pick one):</label>
+              <div className="color-preview" style={{backgroundColor: this.props.color[i]}}></div>
+            </div>
           </div>
           <ColorPicker onClick={this.props.onClick} id={i}/>
         </li>

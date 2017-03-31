@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
+import '../popup.css'
 
 class Popup extends Component {
   constructor(props){

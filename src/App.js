@@ -5,6 +5,7 @@ import Game from './components/game'
 import 'bootstrap/dist/css/bootstrap.css';
 import './App.css';
 import './colors.css';
+import './header.css';
 
 class App extends Component {
 

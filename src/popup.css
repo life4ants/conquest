@@ -1,0 +1,6 @@
+@media(max-width: 400px){
+  .modal-footer .btn {
+    padding: 5px 10px;
+    font-size: 13px;
+  }
+}
