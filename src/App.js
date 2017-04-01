@@ -14,17 +14,17 @@ class App extends Component {
     this.state = {
       phase: 'welcome',
       id: 'none',
-      games: JSON.parse(localStorage.games)
+      games: JSON.parse(localStorage.conquestGames)
     }
   }
 
   cancel(){
-    this.setState({phase: 'welcome', id: 'none', games: JSON.parse(localStorage.games)})
+    this.setState({phase: 'welcome', id: 'none', games: JSON.parse(localStorage.conquestGames)})
   }
 
   deleteGame(game){
     console.log('delete game',game)
-    let games = JSON.parse(localStorage.games)
+    let games = JSON.parse(localStorage.conquestGames)
     games.splice(game, 1)
     localStorage.setItem('games', JSON.stringify(games))
     this.setState({games: games})
@@ -57,7 +57,6 @@ class App extends Component {
   }
 
   render() {
-    console.log('app rendered')
     return (
       <div className="App">
         {this.renderHeader()}

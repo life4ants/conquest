@@ -27,7 +27,7 @@ class Welcome extends Component {
   }
 
   render() {
-    let games = this.props.games !== '' ? this.props.games.map(
+    let games = this.props.games.length > 0 ? this.props.games.map(
               (game, i) => {
                 return (
                 <li key={i}>
