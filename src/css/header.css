@@ -33,6 +33,14 @@ header {
   height: 24px;
 }
 
+.H-icon img:hover{
+  opacity: 0.6;
+}
+
+.disabled {
+  opacity: 0.6;
+}
+
 @media(max-width: 768px){
   .header-content .btn-sm {
     padding: 5px;

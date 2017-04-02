@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Box from './box'
-import '../territories.css'
+import '../css/territories.css'
 
 class Board extends Component {
 

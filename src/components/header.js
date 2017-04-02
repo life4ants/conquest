@@ -32,13 +32,13 @@ class Header extends Component {
   renderIcon(i){
     let images = [army_P, army_A, army_C]
     let reserves = this.props.player.reserves[i]
+    let disabled = reserves.allowed === 'yes' ? '' : 'disabled'
     let onClick = this.props.phase === 'playing' ? () => this.props.reserves(i) : () => {};
     return (
        <div className='H-icon' key={i}>
         <span className="M-label">{reserves.value}</span>
-        <img src={images[i]} alt={reserves.name + " troops"}
-             title={reserves.value+ " reserves available on the "+reserves.name}
-             onClick={onClick}/>
+        <img src={images[i]} alt={reserves.name + " troops"} className={disabled}
+             title={"Land troops on the "+reserves.name}     onClick={onClick} />
       </div>)
   }
 

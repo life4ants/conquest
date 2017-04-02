@@ -3,9 +3,9 @@ import Header from './components/header'
 import Welcome from './components/welcome'
 import Game from './components/game'
 import 'bootstrap/dist/css/bootstrap.css';
-import './App.css';
-import './colors.css';
-import './header.css';
+import './css/App.css';
+import './css/colors.css';
+import './css/header.css';
 
 class App extends Component {
 

@@ -46,7 +46,8 @@ class Game extends Component {
         alert: {open: false, content: '', center: false, type: 'alert'},
         round: 1,
         selectedTerr: '',
-        popup: {open: false, type: 'none'}
+        popup: {open: false, type: 'none'},
+        marchType: 'norm'
       };
       this.state = state
   }
@@ -251,9 +252,14 @@ class Game extends Component {
   }
 
   marchFrom(id){
-    if (this.state.reserves[id][this.state.turnIndex] > 0){
+    let playerId = this.state.turnIndex
+    let opponentId = playerId === 0 ? 1 : 0
+    if (this.state.reserves[id][playerId] > 0){
       this.select(id)
-      this.setState({selectedTerr: id, phase: 'march2', footer: ['march2']})
+      if (this.state.reserves[id][opponentId] > 0)
+        this.setState({selectedTerr: id, marchType: 'attack', phase: 'march2', footer: ['march2']})
+      else
+        this.setState({selectedTerr: id, marchType: 'norm', phase: 'march2', footer: ['march2']})
     }
     else
       this.openAlert('You do not have any troops on that Territory to march!', true, 'alert')
@@ -261,8 +267,13 @@ class Game extends Component {
 
   marchTo(terr1, terr2){
     if (GameData.canFight(terr1, terr2)){
-      this.select(terr2)
-      this.marchingModal(terr1, terr2)
+      if (this.state.marchType === 'norm' ||
+        (this.state.marchType === 'attack' &&  this.state.owners[terr2] === this.state.turnIndex ) ){
+        this.select(terr2)
+        this.marchingModal(terr1, terr2)
+      }
+      else
+        this.openAlert("When marching troops out of an opponent's territory, you must march into one of your own territories.", true, 'alert')
     }
     else
       this.openAlert("Troops can only march to a bordering Territory!", true, 'alert')
