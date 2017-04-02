@@ -1,3 +1,4 @@
+
 .colorBoxContainer{
   flex: 1 0 50px;
   margin: 10px;
@@ -62,3 +63,26 @@
 .color10 {fill: #ffddb8;}
 .color11 {fill: #ffddcf;}
 .color12 {fill: #ffdd9e;}
+
+@media(max-width: 400px){
+
+  .setup{
+    font-size: 12px;
+  }
+
+  .colorBoxContainer{
+    flex-basis: 45px;
+    margin: 5px;
+    height: 50px;
+  }
+
+  .colorBox{
+    width: 45px;
+    height: 45px;
+  }
+
+  .colorBox:hover{
+    width: 50px;
+    height: 50px;
+  }
+}

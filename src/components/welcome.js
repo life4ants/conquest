@@ -49,7 +49,7 @@ class Welcome extends Component {
           <p>
             The game is over when there are no troops left, when one player owns the entire board, or when you get bored and quit. ;) The ending has not been programed yet, because no one has ever finished.
           </p>
-          <div className='games-list-box'>
+          <div className='games-list-box' id='sorry'>
             <div id="game-list">
               <h4>Saved Games:</h4>
               <ul>

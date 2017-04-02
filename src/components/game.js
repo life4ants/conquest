@@ -13,7 +13,7 @@ class Game extends Component {
 
   constructor(props){
     super(props);
-    let state = props.gameId !== 'none' ? JSON.parse(localStorage.games)[props.gameId]
+    let state = props.gameId !== 'none' ? JSON.parse(localStorage.conquestGames)[props.gameId]
       : {
         name: '',
         id: 'none',
@@ -105,7 +105,7 @@ class Game extends Component {
 
   saveGame(data){
     if (data[0]) {
-      let games = JSON.parse(localStorage.games)
+      let games = JSON.parse(localStorage.conquestGames)
       if (data[1] === 'new') {
         let game = this.state
         game.name = data[2]
@@ -122,7 +122,7 @@ class Game extends Component {
         game.selectedTerr = ''
         games[this.props.gameId] = game
       }
-      localStorage.setItem('games', JSON.stringify(games))
+      localStorage.setItem('conquestGames', JSON.stringify(games))
       this.props.cancel()
     }
     else
@@ -455,12 +455,12 @@ class Game extends Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="game">
+        {this.renderHeader()}
         <div id="wrapper">
           <GameMap clicker={(i) => this.clicker(i)} owners={this.state.owners}
                    colors={[this.state.players[0].id, this.state.players[1].id]} />
         </div>
-        {this.renderHeader()}
         {this.pickComponent()}
         <Alert open={this.state.alert.open}
                content={this.state.alert.content}

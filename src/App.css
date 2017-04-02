@@ -75,13 +75,6 @@ ul button{
   margin: auto;
 }
 
-#wrapper{
-  background-color: #333;
-  width: 1200px;
-  margin: auto;
-  padding-top: 40px;
-}
-
 footer{
  position: fixed;
  bottom: 0px;

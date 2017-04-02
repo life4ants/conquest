@@ -26,7 +26,7 @@ class App extends Component {
     console.log('delete game',game)
     let games = JSON.parse(localStorage.conquestGames)
     games.splice(game, 1)
-    localStorage.setItem('games', JSON.stringify(games))
+    localStorage.setItem('conquestGames', JSON.stringify(games))
     this.setState({games: games})
   }
 
@@ -49,6 +49,11 @@ class App extends Component {
   renderHeader(){
     if (this.state.phase === 'welcome'){
       return <Header phase='setup'/>
+    }
+    else {
+      document.getElementById('sorry').innerHTML = "<div class='btn-danger'><h4>We're Sorry</h4>\n\
+        <p>This website is build with React.js. It looks like you are on a browser that React does not support, \n\
+        so this game will not work. Try using a newer browser like chrome or Firefox.</p></div>"
     }
   }
 
